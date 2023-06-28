@@ -1,12 +1,22 @@
-var http = require('http')
+const express = require('express');
+const app = express();
+const path = require('path');
 
-var port = 4000
+// Serve static files from the "public" directory
+app.use(express.static('public'));
 
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {'Content-Type': 'text/plain'})
-  response.end('Hello World!! \n')
-})
+// Serve the "images" directory as a static folder
+app.use('/images', express.static('public/images'));
 
-server.listen(port)
 
-console.log('Server running at http://localhost:' + port)
+// Route for the homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
+// Start the server
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
